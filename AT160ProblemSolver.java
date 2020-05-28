@@ -71,6 +71,7 @@ public class AT160ProblemSolver {
                 System.out.println("\nYou put in something wrong. Try again." +
                 "\n");
             }
+            
         }
 
     }
