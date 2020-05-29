@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 public class AT160ProblemSolver {
     private static final double constant = 0.7854;
     private static final double convertToCi = 16.387;
+    private static final int[] tensile = {55000, 69000, 117500, 136500, 150000};
 
     public static double calcCR(double DH, double CHV, double B, double S) {
         double SV = constant * B * B * S;
@@ -18,19 +19,40 @@ public class AT160ProblemSolver {
         return B * B * constant * S * C;
     }
 
+    public static double calcTL(double diameter, boolean longer) {
+        if (longer) {
+            return 2 * diameter + 0.5;
+        }
+        else {
+            return 2 * diameter + 0.25;
+        }
+    }
+
+    public static double calcSA(double diameter) {
+        return diameter * diameter * constant;
+    }
+
+    public static double calcTF(double diameter, int grade) {
+        return calcSA(diameter) * tensile[grade / 2];
+    }
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         double DH;
         double CHV;
         double B;
         double S;
+        double d;
+        double b;
         int c;
+        int g;
         int counter = 0;
         while (counter < 1) {
             try {
                 System.out.println("What would you like to calculate?");
                 System.out.println("Your options are: \"CID\" (displacement),"
-                + " \"CR\" (compression ratio), and \"quit\".");
+                + " \"CR\" (compression ratio), \"TL\" (thread length) " + 
+                "\"SA\" (stress area), \"TF\" (total force), and \"quit\".");
                 String toCalc = in.next();
                 toCalc = toCalc.toUpperCase();
                 switch(toCalc) {
@@ -62,6 +84,36 @@ public class AT160ProblemSolver {
                             calcCID(B, S, c)+ " inches.");
                             System.out.println("Press Ctrl + C to quit.\n");
                             break;
+                        case "TL":
+                            System.out.println("What is the diameter, in "
+                            + "inches?");
+                            d = in.nextDouble();
+                            System.out.println("How long is the bolt, in " 
+                            + "inches?");
+                            b = in.nextDouble();
+                            System.out.println("The thread is " + 
+                            calcTL(d, b > 6) + " inches long.");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "SA":
+                            System.out.println("What is the diameter, in "
+                            + "inches?");
+                            d = in.nextDouble();
+                            System.out.println("The stress area is " + 
+                            calcSA(d) + " inches.");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "TF":
+                            System.out.println("What is the diameter, in "
+                            + "inches?");
+                            d = in.nextDouble();
+                            System.out.println("What is the grade of the " +
+                            "fastener?");
+                            g = in.nextInt();
+                            System.out.println("The total force is " + 
+                            calcTF(d, g) + " pounds.");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
                         case "QUIT":
                             counter = 100;
                             break;
@@ -71,7 +123,7 @@ public class AT160ProblemSolver {
                 System.out.println("\nYou put in something wrong. Try again." +
                 "\n");
             }
-            
+
         }
 
     }
