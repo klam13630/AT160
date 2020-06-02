@@ -28,10 +28,18 @@ public class AT160ProblemSolver {
         }
     }
 
+    public static double brakeHorsepower (double torque, double rpm) {
+        return torque * rpm / 5252;
+    }
     public static double calcSA(double diameter) {
         return diameter * diameter * constant;
     }
 
+    public static double indicatedHorsepower (double psi, double stroke, 
+    double bore, double rpm, int cylinders) {
+        return (psi * (stroke / 12) * (constant * (bore * bore)) * (rpm / 2) * cylinders) / 33000;
+    }
+       
     public static double calcTF(double diameter, int grade) {
         return calcSA(diameter) * tensile[grade / 2];
     }
@@ -44,6 +52,9 @@ public class AT160ProblemSolver {
         double S;
         double d;
         double b;
+        double q; 
+        double r;
+        double psi;
         int c;
         int g;
         int counter = 0;
@@ -52,7 +63,8 @@ public class AT160ProblemSolver {
                 System.out.println("What would you like to calculate?");
                 System.out.println("Your options are: \"CID\" (displacement),"
                 + " \"CR\" (compression ratio), \"TL\" (thread length) " + 
-                "\"SA\" (stress area), \"TF\" (total force), and \"quit\".");
+                "\"SA\" (stress area), \"TF\" (total force), \"BHP\" (brake horsepower),"
+                + "\"IHP\" (indicated horsepower) and \"quit\".");
                 String toCalc = in.next();
                 toCalc = toCalc.toUpperCase();
                 switch(toCalc) {
@@ -114,6 +126,32 @@ public class AT160ProblemSolver {
                             calcTF(d, g) + " pounds.");
                             System.out.println("Press Ctrl + C to quit.\n");
                             break;
+                        case "BHP":
+                            System.out.println("What is the torque, in "
+                            + "ft lbs?");
+                            q = in.nextDouble();
+                            System.out.println("What is the rpm?");
+                            r = in.nextDouble();
+                            System.out.println("The Brake Horsepower is "
+                            + brakeHorsepower(q, r));
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "IHP":
+                            System.out.println("What is the psi?");
+                            psi = in.nextDouble();
+                            System.out.println("What is the stroke in inches?");
+                            S = in.nextDouble();
+                            System.out.println("What is the bore in inches?");
+                            B = in.nextDouble();
+                            System.out.println("What is the rpm?");
+                            r = in.nextDouble();
+                            System.out.println("What is the number of cylinders?");
+                            c = in.nextInt();
+                            System.out.println("The Indicated Horsepower is "
+                            + indicatedHorsepower(psi, S, B, r, c));
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+
                         case "QUIT":
                             counter = 100;
                             break;
