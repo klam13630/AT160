@@ -44,6 +44,21 @@ public class AT160ProblemSolver {
         return calcSA(diameter) * tensile[grade / 2];
     }
 
+    public static double AFR (double cfr, double ff){
+            return cfr / ff;
+    }
+    public static double SFC( double ff, double bhp){
+            return ff / bhp;
+    }
+    public static double VE( double cid , double cfr, double r){
+        return (75500 / cid ) * (cfr / r) ;  
+    }
+    public static double BMEP( double cid , double q){
+        return q * (159/cid);  
+    }
+    public static double TE( double sfc){
+        return 13.1 / sfc;  
+    }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         double DH;
@@ -55,6 +70,12 @@ public class AT160ProblemSolver {
         double q; 
         double r;
         double psi;
+        double cfr;
+        double ff;
+        double bhp;
+        double cid;
+        double sfc;
+
         int c;
         int g;
         int counter = 0;
@@ -64,7 +85,11 @@ public class AT160ProblemSolver {
                 System.out.println("Your options are: \"CID\" (displacement),"
                 + " \"CR\" (compression ratio), \"TL\" (thread length) " + 
                 "\"SA\" (stress area), \"TF\" (total force), \"BHP\" (brake horsepower),"
-                + "\"IHP\" (indicated horsepower) and \"quit\".");
+                + "\"IHP\" (indicated horsepower)," +
+                " \"AFR\" (air fuel ratio), \"SFC\" (specific fuel consumption)," +
+                " \"VE\"(volumetric efficiency), \"BMEP\"(brake mean effective pressure), " +
+                " TE\"(thermal efficiency), and \"quit\".");
+
                 String toCalc = in.next();
                 toCalc = toCalc.toUpperCase();
                 switch(toCalc) {
@@ -151,7 +176,52 @@ public class AT160ProblemSolver {
                             + indicatedHorsepower(psi, S, B, r, c));
                             System.out.println("Press Ctrl + C to quit.\n");
                             break;
-
+                        case "AFR":
+                        System.out.println("What is the corrected air flow in lbs/hr?");
+                        cfr = in.nextDouble();
+                        System.out.println("What is the fuel flow in lbs/hr?");
+                        ff = in.nextDouble();
+                        System.out.println("The Air Fuel Ratio is " 
+                          + AFR(cfr, ff)+":1");
+                          System.out.println("Press Ctrl + C to quit.\n");
+                          break;
+                         case "SFC":
+                         System.out.println("What is the fuel flow in lbs/hr?");
+                         ff = in.nextDouble();
+                         System.out.println("What is the brake horse power?");
+                        bhp = in.nextDouble();
+                        System.out.println("The specific fuel consumption is " 
+                          + SFC(ff, bhp) +" lbs/hr");
+                        System.out.println("Press Ctrl + C to quit.\n");
+                          break;
+                          case "VE":
+                          System.out.println("What is the engine displacement in cu in.?");
+                         cid = in.nextDouble();
+                         System.out.println("What is the corrected air flow in lbs/hr?");
+                         cfr = in.nextDouble();
+                         System.out.println("What is rpm?");
+                         r = in.nextDouble();
+                         System.out.println("The volumetric efficiency is " 
+                          + VE(cid, cfr, r) +"%");
+                          System.out.println("Press Ctrl + C to quit.\n");
+                          break;
+                        case "BMEP":
+                        System.out.println("What is the engine displacement in cu in.?");
+                        cid = in.nextDouble();
+                        System.out.println("What is the torque, in "
+                        + "ft lbs?");
+                        q = in.nextDouble();
+                        System.out.println("The Brake mean effective pressure is " 
+                          + BMEP(cid, q) +" psi");
+                        System.out.println("Press Ctrl + C to quit.\n");
+                          break;
+                        case "TE":
+                        System.out.println("What is the specific fuel consumption?");
+                        sfc = in.nextDouble();
+                        System.out.println("The thermal efficiency is " 
+                        + TE(sfc) +"%");
+                        System.out.println("Press Ctrl + C to quit.\n");
+                        break;
                         case "QUIT":
                             counter = 100;
                             break;
