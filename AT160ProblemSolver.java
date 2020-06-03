@@ -224,6 +224,7 @@ public class AT160ProblemSolver {
                         break;
                         case "QUIT":
                             counter = 100;
+                            in.close();
                             break;
                 }
             }
