@@ -59,6 +59,30 @@ public class AT160ProblemSolver {
     public static double TE( double sfc){
         return 13.1 / sfc;  
     }
+    public static double FHP( double ihp, double bhp){
+        return ihp-bhp;
+    }
+    public static double ME( double bhp, double ihp){
+        return (bhp / ihp) * 100;
+    }
+    public static double saeHP( double B, double c){
+        return ((B * B) * c) / 2.5;
+    }
+    public static double NL( double GL, double RR){
+        return GL * RR;
+    }
+    public static double GL( double NL, double RR){
+        return NL / RR;
+    }
+    public static double RR( double NL, double GL){
+        return NL / GL;
+    }
+    public static double VD( double od, double cd){
+        return od + 180 + cd;
+    }
+    public static double overlap( double iod, double ecd){
+        return iod + ecd;
+    }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         double DH;
@@ -75,7 +99,14 @@ public class AT160ProblemSolver {
         double bhp;
         double cid;
         double sfc;
-
+        double ihp;
+        double NL;
+        double GL;
+        double RR;
+        double od;
+        double cd;
+        double iod;
+        double ecd;
         int c;
         int g;
         int counter = 0;
@@ -88,9 +119,12 @@ public class AT160ProblemSolver {
                 + "\"IHP\" (indicated horsepower)," +
                 " \"AFR\" (air fuel ratio), \"SFC\" (specific fuel consumption)," +
                 " \"VE\"(volumetric efficiency), \"BMEP\"(brake mean effective pressure), " +
-                " TE\"(thermal efficiency), and \"quit\".");
-
-                String toCalc = in.next();
+                " TE\"(thermal efficiency), \"FHP\"(friction horsepower), "
+                +"\"ME\"(mechanical efficiency), \"SAE HP\" (taxable or sae horsepower)" +
+                "\"NL\"(net lift), \"GL\"(gross lift), RR\" (rocker arm ratio)" +
+                "\"VD\" (valve duration), \"OV\"(overlap), "
+                + "and \"quit\".");
+                String toCalc = in.nextLine();
                 toCalc = toCalc.toUpperCase();
                 switch(toCalc) {
                         case "CR": 
@@ -177,49 +211,121 @@ public class AT160ProblemSolver {
                             System.out.println("Press Ctrl + C to quit.\n");
                             break;
                         case "AFR":
-                        System.out.println("What is the corrected air flow in lbs/hr?");
-                        cfr = in.nextDouble();
-                        System.out.println("What is the fuel flow in lbs/hr?");
-                        ff = in.nextDouble();
-                        System.out.println("The Air Fuel Ratio is " 
-                          + AFR(cfr, ff)+":1");
-                          System.out.println("Press Ctrl + C to quit.\n");
-                          break;
-                         case "SFC":
-                         System.out.println("What is the fuel flow in lbs/hr?");
-                         ff = in.nextDouble();
-                         System.out.println("What is the brake horse power?");
-                        bhp = in.nextDouble();
-                        System.out.println("The specific fuel consumption is " 
-                          + SFC(ff, bhp) +" lbs/hr");
-                        System.out.println("Press Ctrl + C to quit.\n");
-                          break;
-                          case "VE":
-                          System.out.println("What is the engine displacement in cu in.?");
-                         cid = in.nextDouble();
-                         System.out.println("What is the corrected air flow in lbs/hr?");
-                         cfr = in.nextDouble();
-                         System.out.println("What is rpm?");
-                         r = in.nextDouble();
-                         System.out.println("The volumetric efficiency is " 
-                          + VE(cid, cfr, r) +"%");
-                          System.out.println("Press Ctrl + C to quit.\n");
-                          break;
+                            System.out.println("What is the corrected air flow in lbs/hr?");
+                            cfr = in.nextDouble();
+                            System.out.println("What is the fuel flow in lbs/hr?");
+                            ff = in.nextDouble();
+                            System.out.println("The Air Fuel Ratio is " 
+                            + AFR(cfr, ff)+":1");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                            case "SFC":
+                            System.out.println("What is the fuel flow in lbs/hr?");
+                            ff = in.nextDouble();
+                            System.out.println("What is the brake horse power?");
+                            bhp = in.nextDouble();
+                            System.out.println("The specific fuel consumption is " 
+                            + SFC(ff, bhp) +" lbs/hr");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "VE":
+                            System.out.println("What is the engine displacement in cu in.?");
+                            cid = in.nextDouble();
+                            System.out.println("What is the corrected air flow in lbs/hr?");
+                            cfr = in.nextDouble();
+                            System.out.println("What is rpm?");
+                            r = in.nextDouble();
+                            System.out.println("The volumetric efficiency is " 
+                            + VE(cid, cfr, r) +"%");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
                         case "BMEP":
-                        System.out.println("What is the engine displacement in cu in.?");
-                        cid = in.nextDouble();
-                        System.out.println("What is the torque, in "
-                        + "ft lbs?");
-                        q = in.nextDouble();
-                        System.out.println("The Brake mean effective pressure is " 
-                          + BMEP(cid, q) +" psi");
-                        System.out.println("Press Ctrl + C to quit.\n");
-                          break;
+                            System.out.println("What is the engine displacement in cu in.?");
+                            cid = in.nextDouble();
+                            System.out.println("What is the torque, in "
+                            + "ft lbs?");
+                            q = in.nextDouble();
+                            System.out.println("The Brake mean effective pressure is " 
+                            + BMEP(cid, q) +" psi");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
                         case "TE":
-                        System.out.println("What is the specific fuel consumption?");
-                        sfc = in.nextDouble();
-                        System.out.println("The thermal efficiency is " 
-                        + TE(sfc) +"%");
+                            System.out.println("What is the specific fuel consumption?");
+                            sfc = in.nextDouble();
+                            System.out.println("The thermal efficiency is " 
+                            + TE(sfc) +"%");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "FHP":
+                            System.out.println("What is the indicated horespower?");
+                            ihp = in.nextDouble();
+                            System.out.println("What is the brake horsepower?");
+                            bhp = in.nextDouble();
+                            System.out.println("The friction horsepower is " + 
+                            FHP(ihp, bhp));
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "ME":
+                            System.out.println("What is the brake horsepower?");
+                            bhp = in.nextDouble();
+                            System.out.println("What is the indicated horsepower?");
+                            ihp = in.nextDouble();
+                            System.out.println("The mechanical efficiency is " 
+                            + ME(bhp, ihp) +"%");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "SAE HP":
+                            System.out.println("What is the bore, in inches?");
+                            B = in.nextDouble();
+                            System.out.println("How many cylinders?");
+                            c = in.nextInt();
+                            System.out.println("The SAE or Taxable horsepower is " 
+                            + saeHP(B, c) +" hp");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "NL":
+                            System.out.println("What is the gross lift?");
+                            GL = in.nextDouble();
+                            System.out.println("What is the rocker arm ratio?");
+                            RR = in.nextDouble();
+                            System.out.println("The net lift is " 
+                            + NL(GL, RR) +" inches");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "GL":
+                            System.out.println("What is the net lift?");
+                            NL = in.nextDouble();
+                            System.out.println("What is the rocker arm ratio?");
+                            RR = in.nextDouble();
+                            System.out.println("The gross lift is " 
+                            + GL(NL, RR) +" inches");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "RR":
+                            System.out.println("What is the net lift?");
+                            NL = in.nextDouble();
+                            System.out.println("What is the gross lift?");
+                            GL = in.nextDouble();
+                            System.out.println("The rocker arm ratio is " 
+                            + RR(NL, GL) +" inches");
+                            System.out.println("Press Ctrl + C to quit.\n");
+                            break;
+                        case "VD":
+                        System.out.println("What is the opening degrees?");
+                        od = in.nextDouble();
+                        System.out.println("What is the closing degrees?");
+                        cd = in.nextDouble();
+                        System.out.println("The valve duration is " 
+                        + VD(od, cd) +" degrees");
+                        System.out.println("Press Ctrl + C to quit.\n");
+                        break;
+                        case "OV":
+                        System.out.println("What is the intake opening degrees?");
+                        iod = in.nextDouble();
+                        System.out.println("What is the exhaust closing degrees?");
+                        ecd = in.nextDouble();
+                        System.out.println("The overlap is " 
+                        + overlap(iod, ecd) +" degrees");
                         System.out.println("Press Ctrl + C to quit.\n");
                         break;
                         case "QUIT":
@@ -227,6 +333,7 @@ public class AT160ProblemSolver {
                             in.close();
                             break;
                 }
+                in.nextLine();
             }
             catch (InputMismatchException e) {
                 System.out.println("\nYou put in something wrong. Try again." +
