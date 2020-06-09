@@ -113,21 +113,37 @@ public class AT160ProblemSolver {
         while (counter < 1) {
             try {
                 System.out.println("What would you like to calculate?");
-                System.out.println("Your options are: \"CID\" (displacement),"
-                + " \"CR\" (compression ratio), \"TL\" (thread length) " + 
-                "\"SA\" (stress area), \"TF\" (total force), \"BHP\" (brake horsepower),"
-                + "\"IHP\" (indicated horsepower)," +
-                " \"AFR\" (air fuel ratio), \"SFC\" (specific fuel consumption)," +
-                " \"VE\"(volumetric efficiency), \"BMEP\"(brake mean effective pressure), " +
-                " TE\"(thermal efficiency), \"FHP\"(friction horsepower), "
-                +"\"ME\"(mechanical efficiency), \"SAE HP\" (taxable or sae horsepower)" +
-                "\"NL\"(net lift), \"GL\"(gross lift), RR\" (rocker arm ratio)" +
-                "\"VD\" (valve duration), \"OV\"(overlap), "
-                + "and \"quit\".");
-                String toCalc = in.nextLine();
-                toCalc = toCalc.toUpperCase();
+                System.out.println("Your options are: \n1. CID "
+                +"(displacement)" + "\n2. Compression Ratio" + 
+                "\n3. Thread Length" + "\n4. Stress Area" + "\n5. Total Force"+
+                "\n6. Brake Horsepower " + "\n7. Indicated Horsepower" +
+                "\n8. Air-Fuel Ratio"+ "\n9. Specific Fuel Consumption)" +
+                "\n10. Volumetric Efficiency"+ 
+                "\n11. Brake Mean Effective Pressure" +
+                "\n12. Thermal Efficiency" + "\n13. Friction Horsepower" +
+                "\n14. Mechanical Efficiency" + 
+                "\n15. Taxable or SAE Horsepower" +
+                "\n16. Net Lift" + "\n17. Gross Lift" + 
+                "\n18. Rocker Arm Ratio" + "\n19. Valve Duration" +
+                "\n20. Overlap");
+                int toCalc = in.nextInt();
                 switch(toCalc) {
-                        case "CR": 
+                        case 0:
+                            counter = 100;
+                            in.close();
+                            break;
+                        case 1:
+                            System.out.println("What is the bore, in inches?");
+                            B = in.nextDouble();
+                            System.out.println("What is the stroke, in" 
+                            + " inches?");
+                            S = in.nextDouble();
+                            System.out.println("How many cylinders?");
+                            c = in.nextInt();
+                            System.out.println("The displacement is: " + 
+                            calcCID(B, S, c)+ " inches.");
+                            break;
+                        case 2: 
                             System.out.println("What is the deck height, in " +
                             "inches?");
                             DH = in.nextDouble();
@@ -141,21 +157,8 @@ public class AT160ProblemSolver {
                             S = in.nextDouble();
                             System.out.println("The compression ratio is: " +
                             calcCR(DH, CHV, B, S) + ":1");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "CID":
-                            System.out.println("What is the bore, in inches?");
-                            B = in.nextDouble();
-                            System.out.println("What is the stroke, in" 
-                            + " inches?");
-                            S = in.nextDouble();
-                            System.out.println("How many cylinders?");
-                            c = in.nextInt();
-                            System.out.println("The displacement is: " + 
-                            calcCID(B, S, c)+ " inches.");
-                            System.out.println("Press Ctrl + C to quit.\n");
-                            break;
-                        case "TL":
+                        case 3:
                             System.out.println("What is the diameter, in "
                             + "inches?");
                             d = in.nextDouble();
@@ -164,17 +167,15 @@ public class AT160ProblemSolver {
                             b = in.nextDouble();
                             System.out.println("The thread is " + 
                             calcTL(d, b > 6) + " inches long.");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "SA":
+                        case 4:
                             System.out.println("What is the diameter, in "
                             + "inches?");
                             d = in.nextDouble();
                             System.out.println("The stress area is " + 
                             calcSA(d) + " inches.");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "TF":
+                        case 5:
                             System.out.println("What is the diameter, in "
                             + "inches?");
                             d = in.nextDouble();
@@ -183,9 +184,8 @@ public class AT160ProblemSolver {
                             g = in.nextInt();
                             System.out.println("The total force is " + 
                             calcTF(d, g) + " pounds.");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "BHP":
+                        case 6:
                             System.out.println("What is the torque, in "
                             + "ft lbs?");
                             q = in.nextDouble();
@@ -193,9 +193,8 @@ public class AT160ProblemSolver {
                             r = in.nextDouble();
                             System.out.println("The Brake Horsepower is "
                             + brakeHorsepower(q, r));
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "IHP":
+                        case 7:
                             System.out.println("What is the psi?");
                             psi = in.nextDouble();
                             System.out.println("What is the stroke in inches?");
@@ -208,27 +207,24 @@ public class AT160ProblemSolver {
                             c = in.nextInt();
                             System.out.println("The Indicated Horsepower is "
                             + indicatedHorsepower(psi, S, B, r, c));
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "AFR":
+                        case 8:
                             System.out.println("What is the corrected air flow in lbs/hr?");
                             cfr = in.nextDouble();
                             System.out.println("What is the fuel flow in lbs/hr?");
                             ff = in.nextDouble();
                             System.out.println("The Air Fuel Ratio is " 
                             + AFR(cfr, ff)+":1");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                            case "SFC":
+                        case 9:
                             System.out.println("What is the fuel flow in lbs/hr?");
                             ff = in.nextDouble();
                             System.out.println("What is the brake horse power?");
                             bhp = in.nextDouble();
                             System.out.println("The specific fuel consumption is " 
                             + SFC(ff, bhp) +" lbs/hr");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "VE":
+                        case 10:
                             System.out.println("What is the engine displacement in cu in.?");
                             cid = in.nextDouble();
                             System.out.println("What is the corrected air flow in lbs/hr?");
@@ -237,9 +233,8 @@ public class AT160ProblemSolver {
                             r = in.nextDouble();
                             System.out.println("The volumetric efficiency is " 
                             + VE(cid, cfr, r) +"%");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "BMEP":
+                        case 11:
                             System.out.println("What is the engine displacement in cu in.?");
                             cid = in.nextDouble();
                             System.out.println("What is the torque, in "
@@ -247,97 +242,106 @@ public class AT160ProblemSolver {
                             q = in.nextDouble();
                             System.out.println("The Brake mean effective pressure is " 
                             + BMEP(cid, q) +" psi");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "TE":
+                        case 12:
                             System.out.println("What is the specific fuel consumption?");
                             sfc = in.nextDouble();
                             System.out.println("The thermal efficiency is " 
                             + TE(sfc) +"%");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "FHP":
+                        case 13:
                             System.out.println("What is the indicated horespower?");
                             ihp = in.nextDouble();
                             System.out.println("What is the brake horsepower?");
                             bhp = in.nextDouble();
                             System.out.println("The friction horsepower is " + 
                             FHP(ihp, bhp));
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "ME":
+                        case 14:
                             System.out.println("What is the brake horsepower?");
                             bhp = in.nextDouble();
                             System.out.println("What is the indicated horsepower?");
                             ihp = in.nextDouble();
                             System.out.println("The mechanical efficiency is " 
                             + ME(bhp, ihp) +"%");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "SAE HP":
+                        case 15:
                             System.out.println("What is the bore, in inches?");
                             B = in.nextDouble();
                             System.out.println("How many cylinders?");
                             c = in.nextInt();
                             System.out.println("The SAE or Taxable horsepower is " 
                             + saeHP(B, c) +" hp");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "NL":
+                        case 16:
                             System.out.println("What is the gross lift?");
                             GL = in.nextDouble();
                             System.out.println("What is the rocker arm ratio?");
                             RR = in.nextDouble();
                             System.out.println("The net lift is " 
                             + NL(GL, RR) +" inches");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "GL":
+                        case 17:
                             System.out.println("What is the net lift?");
                             NL = in.nextDouble();
                             System.out.println("What is the rocker arm ratio?");
                             RR = in.nextDouble();
                             System.out.println("The gross lift is " 
                             + GL(NL, RR) +" inches");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "RR":
+                        case 18:
                             System.out.println("What is the net lift?");
                             NL = in.nextDouble();
                             System.out.println("What is the gross lift?");
                             GL = in.nextDouble();
                             System.out.println("The rocker arm ratio is " 
                             + RR(NL, GL) +" inches");
-                            System.out.println("Press Ctrl + C to quit.\n");
                             break;
-                        case "VD":
-                        System.out.println("What is the opening degrees?");
-                        od = in.nextDouble();
-                        System.out.println("What is the closing degrees?");
-                        cd = in.nextDouble();
-                        System.out.println("The valve duration is " 
-                        + VD(od, cd) +" degrees");
-                        System.out.println("Press Ctrl + C to quit.\n");
-                        break;
-                        case "OV":
-                        System.out.println("What is the intake opening degrees?");
-                        iod = in.nextDouble();
-                        System.out.println("What is the exhaust closing degrees?");
-                        ecd = in.nextDouble();
-                        System.out.println("The overlap is " 
-                        + overlap(iod, ecd) +" degrees");
-                        System.out.println("Press Ctrl + C to quit.\n");
-                        break;
-                        case "QUIT":
-                            counter = 100;
-                            in.close();
+                        case 19:
+                            System.out.println("What is the opening degrees?");
+                            od = in.nextDouble();
+                            System.out.println("What is the closing degrees?");
+                            cd = in.nextDouble();
+                            System.out.println("The valve duration is " 
+                            + VD(od, cd) +" degrees");
+                            break;
+                        case 20:
+                            System.out.println("What is the intake opening degrees?");
+                            iod = in.nextDouble();
+                            System.out.println("What is the exhaust closing degrees?");
+                            ecd = in.nextDouble();
+                            System.out.println("The overlap is " 
+                            + overlap(iod, ecd) +" degrees");
                             break;
                 }
+                System.out.println("\nWould you like to continue? (Y/n)");
+                System.out.println("Press enter twice to continue.");
                 in.nextLine();
+                String reply = in.nextLine();
+                reply.toLowerCase();
+                switch(reply) {
+                    case "y":
+                    case "ye":
+                    case "yes":
+                        in.nextLine();
+                        break;
+                    case "n":
+                    case "no": 
+                        in.close();
+                        counter = 100;
+                        break;  
+                    default:
+                        in.nextLine();
+                        break;
+                }
             }
             catch (InputMismatchException e) {
                 System.out.println("\nYou put in something wrong. Try again." +
                 "\n");
+            }
+            catch (Exception e) {
+                System.out.println("\nWhoops, something went wrong. Please " +
+                "notify me.");
             }
 
         }
