@@ -126,12 +126,9 @@ public class AT160ProblemSolver {
                 "\n16. Net Lift" + "\n17. Gross Lift" + 
                 "\n18. Rocker Arm Ratio" + "\n19. Valve Duration" +
                 "\n20. Overlap");
-                int toCalc = in.nextInt();
+                String reply = in.nextLine();
+                int toCalc = Integer.parseInt(reply);
                 switch(toCalc) {
-                        case 0:
-                            counter = 100;
-                            in.close();
-                            break;
                         case 1:
                             System.out.println("What is the bore, in inches?");
                             B = in.nextDouble();
@@ -314,12 +311,11 @@ public class AT160ProblemSolver {
                             + overlap(iod, ecd) +" degrees");
                             break;
                 }
-
-                System.out.println("\nWould you like to continue? (Y/n)");
-                System.out.println("Press enter twice to continue.");
-                String reply = in.nextLine();
-                reply.toLowerCase();
-                switch(reply) {
+                in.nextLine();
+                System.out.println("Would you like to continue? (Y/n)");
+                String answer = in.nextLine();
+                answer.toLowerCase();
+                switch(answer) {
                     case "n":
                     case "no": 
                         in.close();
@@ -329,7 +325,7 @@ public class AT160ProblemSolver {
                         in.nextLine();
                         break;
                 }
-                
+
             }
             catch (InputMismatchException e) {
                 System.out.println("\nYou put in something wrong. Try again." +
@@ -338,6 +334,7 @@ public class AT160ProblemSolver {
             catch (Exception e) {
                 System.out.println("\nWhoops, something went wrong. Please " +
                 "notify me.");
+                return;
             }
 
         }
