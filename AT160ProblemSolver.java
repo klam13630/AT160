@@ -314,17 +314,12 @@ public class AT160ProblemSolver {
                             + overlap(iod, ecd) +" degrees");
                             break;
                 }
+
                 System.out.println("\nWould you like to continue? (Y/n)");
                 System.out.println("Press enter twice to continue.");
-                in.nextLine();
                 String reply = in.nextLine();
                 reply.toLowerCase();
                 switch(reply) {
-                    case "y":
-                    case "ye":
-                    case "yes":
-                        in.nextLine();
-                        break;
                     case "n":
                     case "no": 
                         in.close();
@@ -334,6 +329,7 @@ public class AT160ProblemSolver {
                         in.nextLine();
                         break;
                 }
+                
             }
             catch (InputMismatchException e) {
                 System.out.println("\nYou put in something wrong. Try again." +
