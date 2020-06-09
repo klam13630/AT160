@@ -4,7 +4,11 @@ import java.util.InputMismatchException;
 public class AT160ProblemSolver {
     private static final double constant = 0.7854;
     private static final double convertToCi = 16.387;
+    private static final double thermal_constant = 42.4;
     private static final int[] tensile = {55000, 69000, 117500, 136500, 150000};
+    private static final double[] specific_heat = {1.0, .434, .6, .116, .21, .12, .1, .095, .031};
+    private static final double[] latent_heat = {970, 135, 425, 512, 397, 261};
+    private static final double[] heat_values = {123000, 138450};
 
     public static double calcCR(double DH, double CHV, double B, double S) {
         double SV = constant * B * B * S;
@@ -83,7 +87,17 @@ public class AT160ProblemSolver {
     public static double overlap( double iod, double ecd){
         return iod + ecd;
     }
-    public static void main(String[] args) {
+    public static double heatCapacity( double w, double dt, int choice){
+        return w * dt * specific_heat[choice];
+    }
+    public static double latentHeat(double w, int choice) {
+        return w * latent_heat[choice];
+    }
+    public static double thermal_efficiency(double bhp, int choice, double gph) {
+        return (bhp * thermal_constant) / (heat_values[choice] * (gph / 60)) * 100;
+    }
+
+        public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         double DH;
         double CHV;
@@ -107,6 +121,11 @@ public class AT160ProblemSolver {
         double cd;
         double iod;
         double ecd;
+        double weight;
+        double gallons_per_hr;
+        double int_temp;
+        double fin_temp;
+        int choice;
         int c;
         int g;
         int counter = 0;
@@ -125,7 +144,9 @@ public class AT160ProblemSolver {
                 "\n15. Taxable or SAE Horsepower" +
                 "\n16. Net Lift" + "\n17. Gross Lift" + 
                 "\n18. Rocker Arm Ratio" + "\n19. Valve Duration" +
-                "\n20. Overlap");
+                "\n20. Overlap" + "\n21. Heat Capacity" +
+                "\n22. Latent Heat of Vaporization" + 
+                "\n23. Thermal Efficiency (Heat)");
                 String reply = in.nextLine();
                 int toCalc = Integer.parseInt(reply);
                 switch(toCalc) {
@@ -309,6 +330,40 @@ public class AT160ProblemSolver {
                             ecd = in.nextDouble();
                             System.out.println("The overlap is " 
                             + overlap(iod, ecd) +" degrees");
+                            break;
+                        case 21:
+                            System.out.println("What is the weight in lbs?");
+                            weight = in.nextDouble();
+                            System.out.println("What was the initial temperature in degrees Fahrenheit?");
+                            int_temp = in.nextDouble();
+                            System.out.println("What is the final temperature in degrees Fahrenheit?");
+                            fin_temp = in.nextDouble();
+                            System.out.println("Which coolant was used? \n1. Water" +
+                            "\n2. Gas\n3. Alcohol\n4. Steel\n5. Aluminum\n6. Cast Iron" +
+                            "\n7. Copper\n8. Brass\n9. Lead");
+                            choice = in.nextInt();
+                            System.out.println("The heat capacity is " + 
+                            heatCapacity(weight, fin_temp - int_temp, choice - 1)
+                            + " BTU.");
+                            break;
+                        case 22:
+                            System.out.println("What is the weight in lbs?");
+                            weight = in.nextDouble();
+                            System.out.println("What liquid is being boiled? \n1. Water" +
+                            "\n2. Gas\n3. Alcohol\n4. Ethyl Alcohol\n5. Methanol\n6. Solvent");
+                            choice = in.nextInt();
+                            System.out.println("The latent heat of vaporization is " +
+                            latentHeat(weight, choice - 1) + " BTU.");
+                            break;
+                        case 23: 
+                            System.out.println("What is the Brake Horsepower?"); 
+                            bhp = in.nextDouble();
+                            System.out.println("What is the liquid used? \n1. Gas\n2. Diesel");
+                            choice = in.nextInt();
+                            System.out.println("What is the GPH (gallons per hour)?");
+                            gallons_per_hr = in.nextDouble();
+                            System.out.println("The thermal efficiency is " + 
+                            thermal_efficiency(bhp, choice - 1, gallons_per_hr) + "%.");
                             break;
                 }
                 in.nextLine();
