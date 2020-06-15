@@ -196,11 +196,11 @@ public class AT160ProblemSolver {
     }
 
     public static double initialVolumeP(double p1, double p2, double v2) {
-        return (((p2 + 14.7) * v2) / (p1 + 14.7)) - 14.7;
+        return (((p2 + 14.7) * v2) / (p1 + 14.7));
     }
 
     public static double finalVolumeP(double p1, double p2, double v1) {
-        return (((p1 + 14.7) * v1) / (p2 + 14.7)) - 14.7;
+        return (((p1 + 14.7) * v1) / (p2 + 14.7));
     }
 
     public static double gasCompressionRatio(double p1, double p2) {
@@ -727,7 +727,7 @@ public class AT160ProblemSolver {
                         System.out.println("What is the final volume?");
                         finalVolume = in.nextDouble();
                         System.out.println("The final pressure is " + 
-                        initialPressure(initialPressure, initialVolume, 
+                        finalPressure(initialPressure, initialVolume, 
                         finalVolume)); 
                         break;
                     case 42:
@@ -738,8 +738,8 @@ public class AT160ProblemSolver {
                         System.out.println("What is the final pressure?");
                         finalPressure = in.nextDouble();
                         System.out.println("The initial volume is " + 
-                        initialVolumeP(finalVolume, initialPressure,
-                        finalPressure)); 
+                        initialVolumeP(initialPressure,
+                        finalPressure, finalVolume)); 
                         break;
                     case 43:
                         System.out.println("What is the initial volume?");
@@ -749,8 +749,8 @@ public class AT160ProblemSolver {
                         System.out.println("What is the final pressure?");
                         finalPressure = in.nextDouble();
                         System.out.println("The final volume is " + 
-                        finalVolumeP(initialVolume, initialPressure,
-                        finalPressure)); 
+                        finalVolumeP(initialPressure,
+                        finalPressure, initialVolume)); 
                         break;
                     case 44:
                         System.out.println("What is the beginning pressure?");
@@ -847,7 +847,7 @@ public class AT160ProblemSolver {
                         finalVolume = in.nextDouble();
                         System.out.println("What is the initial temperature?");
                         initialTemp = in.nextDouble();
-                        System.out.println("The initial temperature is " + 
+                        System.out.println("The final temperature is " + 
                         combinedFinalTemp(initialPressure, finalPressure,
                         initialVolume, finalVolume, initialTemp));
                         break;
