@@ -52,69 +52,193 @@ public class AT160ProblemSolver {
     }
 
     public static double AFR (double cfr, double ff){
-            return cfr / ff;
+        return cfr / ff;
     }
+
     public static double SFC( double ff, double bhp){
-            return ff / bhp;
+        return ff / bhp;
     }
+
     public static double VE( double cid , double cfr, double r){
         return (75500 / cid ) * (cfr / r) ;  
     }
+
     public static double BMEP( double cid , double q){
         return q * (159/cid);  
     }
+
     public static double TE( double sfc){
         return 13.1 / sfc;  
     }
+
     public static double FHP( double ihp, double bhp){
         return ihp-bhp;
     }
+
     public static double ME( double bhp, double ihp){
         return (bhp / ihp) * 100;
     }
+
     public static double saeHP( double B, double c){
         return ((B * B) * c) / 2.5;
     }
+
     public static double NL( double GL, double RR){
         return GL * RR;
     }
+
     public static double GL( double NL, double RR){
         return NL / RR;
     }
+
     public static double RR( double NL, double GL){
         return NL / GL;
     }
+
     public static double VD( double od, double cd){
         return od + 180 + cd;
     }
+
     public static double overlap( double iod, double ecd){
         return iod + ecd;
     }
+
     public static double heatCapacity( double w, double dt, int choice){
         return w * dt * specific_heat[choice];
     }
+
     public static double latentHeat(double w, int choice) {
         return w * latent_heat[choice];
     }
+
     public static double thermal_efficiency(double bhp, int choice, double gph) {
         return (bhp * thermal_constant) / (heat_values[choice] * (gph / 60)) * 100;
     }
+
     public static double linear_expansionF(double length, double dt, int choice) {
         return length * dt * linearExpansionF[choice];
     }
+
     public static double linear_expansionC(double length, double dt, int choice) {
         return length * dt * linearExpansionC[choice];
     }
+
     public static double superficial_expansionF(double area, double dt, int choice) {
         return area * dt * 2 * linearExpansionF[choice];
     }
+
     public static double superficial_expansionC(double area, double dt, int choice) {
         return area * dt * 2 * linearExpansionC[choice];
     }
+
     public static double volumetric_expansion(double volume, double dt, int choice) {
         return volume * dt * volumetricExpanion[choice];
     }
+
+    public static double forceApplied(double f2, double d1, double d2) {
+        return (f2 * d2) / d1;
+    }
+
+    public static double forceProduced(double f1, double d1, double d2) {
+        return (f1 * d1) / d2;
+    }
+
+    public static double distanceToFulcrum(double f1, double f2, double d2) {
+        return (f2 * d2) / f1;
+    }
+
+    public static double distanceFromFulcrum(double f1, double f2, double d1) {
+        return (f1 * d1) / f2;
+    }
     
+    public static double pressure(double force, double diameter) {
+        return force / (constant * diameter * diameter);
+    }
+
+    public static double force(double pressure, double diameter) {
+        return pressure * constant * diameter * diameter;
+    }
+
+    public static double area(double force, double pressure) {
+        return force / pressure;
+    }
+
+    public static double diameter(double area) {
+        return Math.sqrt(area / constant);
+    }
+
+    public static double mechanicalAdvantage(double applied, double resulting){
+        return resulting / applied;
+    }
+
+    public static double initialVolume(double v2, double t1, double t2) {
+        return (v2 * (t1 + 273)) / (t2 + 273);
+    }
+
+    public static double finalVolume(double v1, double t1, double t2) {
+        return (v1 * (t2 + 273)) / (t1 + 273);
+    }
+
+    public static double initialTemp(double v1, double v2, double t2) {
+        return ((v1 * (t2 + 273)) / v2) - 273;
+    }
+
+    public static double finalTemp(double v1, double v2, double t1) {
+        return ((v2 * (t1 + 273)) / v1) - 273;
+    }
+
+    public static double initialPressure(double p2, double v1, double v2) {
+        return (((p2 + 14.7) * v2) / v1) - 14.7;
+    }
+
+    public static double finalPressure(double p1, double v1, double v2) {
+        return (((p1 + 14.7) * v1) / v2) - 14.7;
+    }
+
+    public static double initialVolumeP(double p1, double p2, double v2) {
+        return (((p2 + 14.7) * v2) / (p1 + 14.7)) - 14.7;
+    }
+
+    public static double finalVolumeP(double p1, double p2, double v1) {
+        return (((p1 + 14.7) * v1) / (p2 + 14.7)) - 14.7;
+    }
+
+    public static double gasCompressionRatio(double p1, double p2) {
+        return (p2 + 14.7) / (p1 + 14.7);
+    }
+
+    public static double combinedInitialPressure(double p2, double v1, 
+    double v2, double t1, double t2) {
+        return (((p2 + 14.7) * v2 * (t1 + 273)) / ((t2 + 273) * v1)) - 14.7;
+    }
+
+    public static double combinedFinalPressure(double p1, double v1, 
+    double v2, double t1, double t2) {
+        return (((p1 + 14.7) * v1 * (t2 + 273)) / ((t1 + 273) * v2)) - 14.7;
+    }
+
+    public static double combinedInitialVolume(double p1, double p2, 
+    double v2, double t1, double t2) {
+        return (((p2 + 14.7) * v2 * (t1 + 273)) / ((t2 + 273) * (p1 + 14.7)));
+    }
+
+    public static double combinedFinalVolume(double p1, double p2, 
+    double v1, double t1, double t2) {
+        return (((p1 + 14.7) * v1 * (t2 + 273)) / ((t1 + 273) * (p2 + 14.7)));
+    }
+
+    public static double combinedInitialTemp(double p1, double p2, 
+    double v1, double v2, double t2) {
+        return (((p1 + 14.7) * v1 * (t2 + 273)) / ((p2 + 14.7) * v2)) - 273;
+    }
+
+    public static double combinedFinalTemp(double p1, double p2, 
+    double v1, double v2, double t1) {
+        return (((p2 + 14.7) * v2 * (t1 + 273)) / ((p1 + 14.7) * v1)) - 273;
+    }
+    
+
+
 
     public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
@@ -142,11 +266,13 @@ public class AT160ProblemSolver {
     double ecd;
     double weight;
     double gallons_per_hr;
-    double int_temp;
-    double fin_temp;
-    double length;
-    double area;
-    double volume;
+    double int_temp, fin_temp;
+    double length, area, volume;
+    double f1, f2, d1, d2;
+    double force, diameter, pressure;
+    double applied, resulting;
+    double initialVolume, finalVolume, initialPressure, finalPressure;
+    double initialTemp, finalTemp;
     boolean fahrenheit;
     int choice;
     int c;
@@ -171,7 +297,22 @@ public class AT160ProblemSolver {
             " | 22. Latent Heat of Vaporization" + 
             "\n23. Thermal Efficiency (Heat)" +
             " | 24. Linear Expansion" + "\n25. Superficial Expansion" +
-            " | 26. Volumetric Expansion");
+            " | 26. Volumetric Expansion" + "\n27. F1 (Force)" +
+            " | 28. F2 (Force)" + "\n29. D1 (Force)" +
+            " | 30. D2 (Force)" + "\n31. Pressure" + " | 32. Force" + 
+            "\n33. Area" + " | 34. Diameter" + 
+            "\n35. Mechanical Advantage" + " | 36. Initial Volume (with Temp)"+
+            "\n37. Final Volume (with Temp)" + " | 38. Initial Temperature" + 
+            "\n39. Final Temperature" + " | 40. Initial Pressure" + 
+            "\n41. Final Pressure" + " | 42. Inital Volume (with Pressure)" +
+            "\n43. Final Volume (with Pressure)" + 
+            "| 44. Compression Ratio (Gas)" + 
+            "\n45. Initial Pressure (Combined)" +
+            " | 46. Final Pressure (Combined)" + 
+            "\n47. Initial Volume (Combined)" + 
+            " | 48. Final Volume (Combined)" + 
+            "\n49. Inital Temperature (Combined)" + 
+            " | 50. Final Temperature (Combined)");
             String reply = in.nextLine();
             int toCalc = Integer.parseInt(reply);
             switch(toCalc) {
@@ -391,7 +532,7 @@ public class AT160ProblemSolver {
                         thermal_efficiency(bhp, choice - 1, gallons_per_hr) + "%.");
                         break;
                     case 24:
-                        System.out.println("What is the length in inches?");
+                        System.out.println("What is the length?");
                         length = in.nextDouble();
                         System.out.println("1. Fahrenheit or 2. Celcius?");
                         fahrenheit = in.nextInt() == 1;
@@ -399,7 +540,6 @@ public class AT160ProblemSolver {
                         int_temp = in.nextDouble();
                         System.out.println("What is the final temperature?");
                         fin_temp = in.nextDouble();
-                        // TODO
                         System.out.println("What is expanding? \n1. Steel" +
                         "\n2. Aluminum\n3. Cast Iron\n4. Copper\n5. Brass\n6. Bronze" +
                         "\n7. Glass\n8. Mercury");
@@ -412,11 +552,11 @@ public class AT160ProblemSolver {
                         else {
                             System.out.println("The linear expansion is " +
                             linear_expansionC(length, fin_temp - int_temp, 
-                            choice - 1) + " inches.");
+                            choice - 1) + ".");
                         }
                         break;
                     case 25:
-                        System.out.println("What is the area in square inches?");
+                        System.out.println("What is the area?");
                         area = in.nextDouble();
                         System.out.println("1. Fahrenheit or 2. Celcius?");
                         fahrenheit = in.nextInt() == 1;
@@ -424,7 +564,6 @@ public class AT160ProblemSolver {
                         int_temp = in.nextDouble();
                         System.out.println("What is the final temperature?");
                         fin_temp = in.nextDouble();
-                        // TODO
                         System.out.println("What is expanding? \n1. Steel" +
                         "\n2. Aluminum\n3. Cast Iron\n4. Copper\n5. Brass\n6. Bronze" +
                         "\n7. Glass\n8. Mercury");
@@ -437,7 +576,7 @@ public class AT160ProblemSolver {
                         else {
                             System.out.println("The volumetric expansion is " +
                             superficial_expansionC(area, fin_temp - int_temp, 
-                            choice - 1) + " square inches.");
+                            choice - 1) + ".");
                         }
                         break;
                     case 26:
@@ -447,14 +586,271 @@ public class AT160ProblemSolver {
                         int_temp = in.nextDouble();
                         System.out.println("What is the final temperature in degrees Celcius?");
                         fin_temp = in.nextDouble();
-                        // TODO
                         System.out.println("What is expanding?\n1. Water" +
                         "\n2. ATF");
                         choice = in.nextInt();
                         System.out.println("The volumetric expansion is " +
                         volumetric_expansion(volume, fin_temp - int_temp, 
                         choice - 1) + ".");
-                        break;            
+                        break;     
+                    case 27:
+                        System.out.println("What is F2?");
+                        f2 = in.nextDouble();
+                        System.out.println("What is D1?");
+                        d1 = in.nextDouble();
+                        System.out.println("What is D2?");
+                        d2 = in.nextDouble();
+                        System.out.println("F1 = " + forceApplied(f2, d1, d2));
+                        break;
+                    case 28:
+                        System.out.println("What is F1?");
+                        f1 = in.nextDouble();
+                        System.out.println("What is D1?");
+                        d1 = in.nextDouble();
+                        System.out.println("What is D2?");
+                        d2 = in.nextDouble();
+                        System.out.println("F2 = " + forceProduced(f1, d1, d2));
+                        break;
+                    case 29:
+                        System.out.println("What is F1?");
+                        f1 = in.nextDouble();
+                        System.out.println("What is F2?");
+                        f2 = in.nextDouble();
+                        System.out.println("What is D2?");
+                        d2 = in.nextDouble();
+                        System.out.println("D1 = " + distanceToFulcrum(f1, 
+                        f2, d2));
+                        break;
+                    case 30:
+                        System.out.println("What is F1?");
+                        f1 = in.nextDouble();
+                        System.out.println("What is F2?");
+                        f2 = in.nextDouble();
+                        System.out.println("What is D1?");
+                        d1 = in.nextDouble();
+                        System.out.println("D2 = " + distanceFromFulcrum(f1, 
+                        f2, d1));
+                        break;
+                    case 31:
+                        System.out.println("What is the force?");
+                        force = in.nextDouble();
+                        System.out.println("What is the diameter?");
+                        diameter = in.nextDouble();
+                        System.out.println("The pressure is " + pressure(force, 
+                        diameter));
+                        break;
+                    case 32:
+                        System.out.println("What is the pressure?");
+                        pressure = in.nextDouble();
+                        System.out.println("What is the diameter?");
+                        diameter = in.nextDouble();
+                        System.out.println("The force is " + force(pressure, 
+                        diameter));
+                        break;
+                    case 33: 
+                        System.out.println("What is the force?");
+                        force = in.nextDouble();
+                        System.out.println("What is the pressure?");
+                        pressure = in.nextDouble();
+                        System.out.println("The area is " + area(force, 
+                        pressure));
+                        break;
+                    case 34:
+                        System.out.println("What is the area?");
+                        area = in.nextDouble();
+                        System.out.println("The diameter is " + diameter(area));
+                        break;
+                    case 35:
+                        System.out.println("What is the force applied?");
+                        applied = in.nextDouble();
+                        System.out.println("What is the resulting force?");
+                        resulting = in.nextDouble();
+                        System.out.println("The mechanical advantage is " + 
+                        mechanicalAdvantage(applied, resulting) + ":1");
+                        break;
+                    case 36:
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The initial volume is " + 
+                        initialVolume(finalVolume, initialTemp, finalTemp)); 
+                        break;
+                    case 37:
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The final volume is " + 
+                        finalVolume(initialVolume, initialTemp, finalTemp)); 
+                        break;
+                    case 38:
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The initial temperature is " + 
+                        initialTemp(initialVolume, finalVolume, finalTemp)); 
+                        break;
+                    case 39:
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("The final temperature is " + 
+                        finalTemp(initialVolume, finalVolume, initialTemp)); 
+                        break;
+                    case 40:
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("The initial pressure is " + 
+                        initialPressure(finalPressure, initialVolume, 
+                        finalVolume)); 
+                        break;
+                    case 41:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("The final pressure is " + 
+                        initialPressure(initialPressure, initialVolume, 
+                        finalVolume)); 
+                        break;
+                    case 42:
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("The initial volume is " + 
+                        initialVolumeP(finalVolume, initialPressure,
+                        finalPressure)); 
+                        break;
+                    case 43:
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("The final volume is " + 
+                        finalVolumeP(initialVolume, initialPressure,
+                        finalPressure)); 
+                        break;
+                    case 44:
+                        System.out.println("What is the beginning pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("The compresstion ratio is " +
+                        gasCompressionRatio(initialPressure, finalPressure) +
+                        ":1");
+                        break;
+                    case 45:
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The initial pressure is " + 
+                        combinedInitialPressure(finalPressure, initialVolume, 
+                        finalVolume, initialTemp, finalTemp));
+                        break;
+                    case 46:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The final pressure is " + 
+                        combinedFinalPressure(initialPressure, initialVolume, 
+                        finalVolume, initialTemp, finalTemp));
+                        break;
+                    case 47:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The initial volume is " + 
+                        combinedInitialVolume(initialPressure, finalPressure, 
+                        finalVolume, initialTemp, finalTemp));
+                        break;
+                    case 48:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The final volume is " + 
+                        combinedFinalVolume(initialPressure, finalPressure, 
+                        initialVolume, initialTemp, finalTemp));
+                        break;
+                    case 49:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the final temperature?");
+                        finalTemp = in.nextDouble();
+                        System.out.println("The initial temperature is " + 
+                        combinedInitialTemp(initialPressure, finalPressure,
+                        initialVolume, finalVolume, finalTemp));
+                        break;
+                    case 50:
+                        System.out.println("What is the initial pressure?");
+                        initialPressure = in.nextDouble();
+                        System.out.println("What is the final pressure?");
+                        finalPressure = in.nextDouble();
+                        System.out.println("What is the initial volume?");
+                        initialVolume = in.nextDouble();
+                        System.out.println("What is the final volume?");
+                        finalVolume = in.nextDouble();
+                        System.out.println("What is the initial temperature?");
+                        initialTemp = in.nextDouble();
+                        System.out.println("The initial temperature is " + 
+                        combinedFinalTemp(initialPressure, finalPressure,
+                        initialVolume, finalVolume, initialTemp));
+                        break;
             }
             in.nextLine();
             System.out.println("Would you like to continue? (Y/n)");
