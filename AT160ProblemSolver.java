@@ -1159,7 +1159,7 @@ public class AT160ProblemSolver {
                         dGR = in.nextDouble();
                         System.out.println("What is the tranmission gear ratio?");
                         tGR = in.nextDouble();
-                        System.out.println("The tire diameter is" + 
+                        System.out.println("The tire diameter is " + 
                         tireDiameter(rpm, mph, dGR, tGR));
                         break;
             }
