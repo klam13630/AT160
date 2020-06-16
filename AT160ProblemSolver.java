@@ -3,6 +3,8 @@ import java.util.InputMismatchException;
 
 public class AT160ProblemSolver {
     private static final double constant = 0.7854;
+    private static final double gear_constant = 0.2617;
+    private static final double other_gear_constant = 0.00297;
     private static final double convertToCi = 16.387;
     private static final double thermal_constant = 42.4;
     private static final int[] tensile = {55000, 69000, 117500, 136500, 150000};
@@ -11,7 +13,11 @@ public class AT160ProblemSolver {
     private static final double[] heat_values = {123000, 138450};
     private static final double[] linearExpansionF = {0.0000066, 0.0000127, 0.0000056, 0.0000092, 0.0000105, 0.0000099, 0.000046, 0.0000332};
     private static final double[] linearExpansionC = {0.0000119, 0.000023, 0.0000102, 0.0000167, 0.000019, 0.000018, 0.000083, 0.0000599};
-    private static final double[] volumetricExpanion = {0.00045, 0.0004};
+    private static final double[] volumetricExpansion = {0.00045, 0.0004};
+    
+
+
+
 
     public static double calcCR(double DH, double CHV, double B, double S) {
         double SV = constant * B * B * S;
@@ -132,7 +138,7 @@ public class AT160ProblemSolver {
     }
 
     public static double volumetric_expansion(double volume, double dt, int choice) {
-        return volume * dt * volumetricExpanion[choice];
+        return volume * dt * volumetricExpansion[choice];
     }
 
     public static double forceApplied(double f2, double d1, double d2) {
@@ -236,9 +242,135 @@ public class AT160ProblemSolver {
     double v1, double v2, double t1) {
         return (((p2 + 14.7) * v2 * (t1 + 273)) / ((p1 + 14.7) * v1)) - 273;
     }
+
+    public static double driverDiameter(double d, double r, double R) {
+        return (d * r) / R;
+    }
     
+    public static double drivenDiameter(double D, double r, double R) {
+        return (D * R) / r;
+    }
 
+    public static double driverRPM(double D, double d, double r) {
+        return (d * r) / D;
+    }
 
+    public static double drivenRPM(double D, double d, double R) {
+        return (D * R) / d;
+    }
+
+    public static double peripheralVelocity(double diameter, double rpm) {
+        return diameter * rpm * gear_constant;
+    }
+
+    public static double calcDiameter(double velocity, double rpm) {
+        return velocity / (rpm * gear_constant);
+    }
+
+    public static double calcRPM(double velocity, double diameter) {
+        return velocity / (diameter * gear_constant);
+    }
+
+    public static double driverTeeth(double t, double N, double n) {
+        return (t * n) / N;
+    }
+
+    public static double drivenTeeth(double T, double N, double n) {
+        return (T * N) / n;
+    }
+
+    public static double driverGear(double T, double t, double n) {
+        return (t * n) / T;
+    }
+
+    public static double drivenGear(double T, double t, double N) {
+        return (T * N) / t;
+    }
+
+    public static double gearRatioT(double T, double t) {
+        return t / T;
+    }
+
+    public static double gearRatioRPM(double N, double n) {
+        return N / n;
+    }
+
+    public static double mph (double rpm, double t, double dGR, double tGR) {
+        return (rpm * t * other_gear_constant) / (dGR * tGR);
+    }
+
+    public static double rpm (double mph, double t, double dGR, double tGR) {
+        return ((dGR * tGR) * mph) / (t * other_gear_constant);
+    }
+
+    public static double GR (double rpm, double mph, double t) {
+        return (rpm * t * other_gear_constant) / mph;
+    }
+
+    public static double tireDiameter(double rpm, double mph, double dGR, 
+    double tGR) {
+        return ((dGR * tGR) * mph) / (rpm * other_gear_constant);
+    }
+
+    /*
+    private static void printOptions() {
+        String[][] table = new String[23][];
+        table[0] = new String[] {" 1. CID (displacement)", 
+        " 2. Compression Ratio", " 3. Thread Length"};
+        table[1] = new String[] {"4. Stress Area", " 5. Total Force",
+        " 6. Brake Horsepower "};
+        table[2] = new String[] {" 7. Indicated Horsepower",
+        " 8. Air-Fuel Ratio", " 9. Specific Fuel Consumption"};
+        table[3] = new String[] {"1 0. Volumetric Efficiency", 
+        " 11. Brake Mean Effective Pressure", " 12. Thermal Efficiency"};
+        table[4] = new String[] {" 13. Friction Horsepower",
+        " 14. Mechanical Efficiency", 
+        " 15. Taxable or SAE Horsepower"};
+        table[5] = new String[] {"16. Net Lift", " 17. Gross Lift", 
+        " 18. Rocker Arm Ratio"};
+        table[6] = new String[] {" 19. Valve Duration",
+        "20. Overlap", " 21. Heat Capacity"};
+        table[7] = new String[] {"22. Latent Heat of Vaporization",
+        "23. Thermal Efficiency (Heat)",
+        "24. Linear Expansion"};
+        table[8] = new String[] {"25. Superficial Expansion",
+        "26. Volumetric Expansion", "27. F1 (Force)"};
+        table[9] = new String[] {"28. F2 (Force)", "29. D1 (Force)",
+        "30. D2 (Force)"};
+        table[10] = new String[] {"31. Pressure", "32. Force", 
+        "33. Area"};
+        table[11] = new String[] {"34. Diameter", 
+        "35. Mechanical Advantage", "36. Initial Volume (with Temp)"};
+        table[12] = new String[] {"37. Final Volume (with Temp)", 
+        "38. Initial Temperature", "39. Final Temperature"};
+        table[13] = new String[] {"40. Initial Pressure", 
+        "41. Final Pressure", "42. Inital Volume (with Pressure)"};
+        table[14] = new String[] {"43. Final Volume (with Pressure)", 
+        "44. Compression Ratio (Gas)", 
+        "45. Initial Pressure (Combined)"};
+        table[15] = new String[] {"46. Final Pressure (Combined)", 
+        "47. Initial Volume (Combined)", 
+        "48. Final Volume (Combined)"};
+        table[16] = new String[] {"49. Inital Temperature (Combined)", 
+        "50. Final Temperature (Combined)", 
+        "51. Driver Diameter"};
+        table[17] = new String[] {"52. Driven Diameter", 
+        "53. Driver RPM", "54. Driven RPM"};
+        table[18] = new String[] {"55. Peripheral Speed", 
+        "56. Pulley Diameter", "57. Pulley RPM"};
+        table[19] = new String[] {"58. Gear Teeth (Driving)",
+        "59. Gear Teeth (Driven)", "60. Gear RPM (Driving)"};
+        table[20] = new String[] {"61. Gear RPM (Driven)", 
+        "62. Gear Ratio (Teeth)", "63. Gear Ratio (RPM)"};
+        table[21] = new String[] {"64. MPH", "65. Engine RPM",
+        "66. Gear Ratio (Final)"};
+        table[22] = new String[] {"67. Tire Diameter", "", ""};
+        System.out.println("Your options are: \n");
+        for (final Object[] row : table) {
+            System.out.format("%-15s | %-15s | %-15s\n", row);
+        }
+    }
+    */
 
     public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
@@ -273,6 +405,9 @@ public class AT160ProblemSolver {
     double applied, resulting;
     double initialVolume, finalVolume, initialPressure, finalPressure;
     double initialTemp, finalTemp;
+    double driverGear, drivenGear, driverRPM, drivenRPM, velocity; 
+    double pulleyDiameter, pulleyRPM, mph, rpm, tireDiameter; 
+    double dGR, tGR;
     boolean fahrenheit;
     int choice;
     int c;
@@ -312,7 +447,15 @@ public class AT160ProblemSolver {
             "\n47. Initial Volume (Combined)" + 
             " | 48. Final Volume (Combined)" + 
             "\n49. Inital Temperature (Combined)" + 
-            " | 50. Final Temperature (Combined)");
+            " | 50. Final Temperature (Combined)" + 
+            "\n51. Driver Diameter" + " | 52. Driven Diameter" + 
+            "\n53. Driver RPM" + " | 54. Driven RPM" + 
+            "\n55. Peripheral Speed" + " | 56. Pulley Diameter" + 
+            "\n57. Pulley RPM" + " | 58. Gear Teeth (Driving)" +
+            "\n59. Gear Teeth (Driven)" + " | 60. Gear RPM (Driving)" + 
+            "\n61. Gear RPM (Driven)" + " | 62. Gear Ratio (Teeth)" +
+            "\n63. Gear Ratio (RPM)" + " | 64. MPH" + "\n65. Engine RPM" +
+            " | 66. Gear Ratio (Final)" + "\n67. Tire Diameter");
             String reply = in.nextLine();
             int toCalc = Integer.parseInt(reply);
             switch(toCalc) {
@@ -851,6 +994,174 @@ public class AT160ProblemSolver {
                         combinedFinalTemp(initialPressure, finalPressure,
                         initialVolume, finalVolume, initialTemp));
                         break;
+                    case 51:
+                        System.out.println("What is the driven diameter?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driver diameter is " + 
+                        driverDiameter(drivenGear, driverRPM, drivenRPM));
+                        break;
+                    case 52: 
+                        System.out.println("What is the driver diameter?");
+                        driverGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driven diameter is " + 
+                        drivenDiameter(driverGear, driverRPM, drivenRPM));
+                        break;
+                    case 53: 
+                        System.out.println("What is the driver diameter?");
+                        driverGear = in.nextDouble();
+                        System.out.println("What is the driven diameter?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driver RPM is " + 
+                        driverRPM(driverGear, drivenGear, drivenRPM));
+                        break;
+                    case 54: 
+                        System.out.println("What is the driver diameter?");
+                        driverGear = in.nextDouble();
+                        System.out.println("What is the driven diameter?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("The driven RPM is " + 
+                        drivenRPM(driverGear, drivenGear, driverRPM));
+                        break;
+                    case 55:
+                        System.out.println("What is the pulley diameter?");
+                        pulleyDiameter = in.nextDouble();
+                        System.out.println("What is the RPM of the pulley?");
+                        pulleyRPM = in.nextDouble();
+                        System.out.println("The peripheral velocity is " + 
+                        peripheralVelocity(pulleyDiameter, pulleyRPM));
+                        break;
+                    case 56:
+                        System.out.println("What is the peripheral velocity?");
+                        velocity = in.nextDouble();
+                        System.out.println("What is the RPM of the pulley?");
+                        pulleyRPM = in.nextDouble();
+                        System.out.println("The pulley diameter is " + 
+                        calcDiameter(velocity, pulleyRPM));
+                        break;
+                    case 57:
+                        System.out.println("What is the peripheral velocity?");
+                        velocity = in.nextDouble();
+                        System.out.println("What is the pulley diameter?");
+                        pulleyDiameter = in.nextDouble();
+                        System.out.println("The RPM of the pulley is " + 
+                        calcRPM(velocity, pulleyDiameter));
+                        break;
+                    case 58:
+                        System.out.println("How many teeth does the driven gear have?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driver gear has " + 
+                        driverTeeth(drivenGear, driverRPM, drivenRPM) + 
+                        " teeth");
+                        break;
+                    case 59:
+                        System.out.println("How many teeth does the driver gear have?");
+                        driverGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driven gear has " + 
+                        drivenTeeth(driverGear, driverRPM, drivenRPM) + 
+                        " teeth");
+                        break;
+                    case 60:
+                        System.out.println("How many teeth does the driver gear have?");
+                        driverGear = in.nextDouble();
+                        System.out.println("How many teeth does the driven gear have?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The driver RPM is " +
+                        driverGear(drivenGear, drivenGear, drivenRPM));
+                        break;
+                    case 61:
+                        System.out.println("How many teeth does the driver gear have?");
+                        driverGear = in.nextDouble();
+                        System.out.println("How many teeth does the driven gear have?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("The driven RPM is " +
+                        drivenGear(drivenGear, drivenGear, driverRPM));
+                        break;
+                    case 62:
+                        System.out.println("How many teeth does the driver gear have?");
+                        driverGear = in.nextDouble();
+                        System.out.println("How many teeth does the driven gear have?");
+                        drivenGear = in.nextDouble();
+                        System.out.println("The gear ratio is " + 
+                        gearRatioT(driverGear, drivenGear) + ":1");
+                        break;
+                    case 63:
+                        System.out.println("What is the driver RPM?");
+                        driverRPM = in.nextDouble();
+                        System.out.println("What is the driven RPM?");
+                        drivenRPM = in.nextDouble();
+                        System.out.println("The gear ratio is " + 
+                        gearRatioRPM(driverRPM, drivenRPM) + ":1");
+                        break;
+                    case 64:
+                        System.out.println("What is the RPM?");
+                        rpm = in.nextDouble();
+                        System.out.println("What is the tire diameter?");
+                        tireDiameter = in.nextDouble();
+                        System.out.println("What is the differential gear ratio?");
+                        dGR = in.nextDouble();
+                        System.out.println("What is the tranmission gear ratio?");
+                        tGR = in.nextDouble();
+                        System.out.println("The MPH is " + 
+                        mph(rpm, tireDiameter, dGR, tGR));
+                        break;
+                    case 65:
+                        System.out.println("What is the MPH?");
+                        mph = in.nextDouble();
+                        System.out.println("What is the tire diameter?");
+                        tireDiameter = in.nextDouble();
+                        System.out.println("What is the differential gear ratio?");
+                        dGR = in.nextDouble();
+                        System.out.println("What is the tranmission gear ratio?");
+                        tGR = in.nextDouble();
+                        System.out.println("The RPM is " + 
+                        rpm(mph, tireDiameter, dGR, tGR));
+                        break;
+                    case 66:
+                        System.out.println("What is the RPM?");
+                        rpm = in.nextDouble();
+                        System.out.println("What is the tire diameter?");
+                        tireDiameter = in.nextDouble();
+                        System.out.println("What is the MPH?");
+                        mph = in.nextDouble();
+                        System.out.println("The gear ratio is " + 
+                        GR(rpm, mph, tireDiameter) + ":1");
+                        break;
+                    case 67:
+                        System.out.println("What is the MPH?");
+                        mph = in.nextDouble();
+                        System.out.println("What is the RPM?");
+                        rpm = in.nextDouble();
+                        System.out.println("What is the differential gear ratio?");
+                        dGR = in.nextDouble();
+                        System.out.println("What is the tranmission gear ratio?");
+                        tGR = in.nextDouble();
+                        System.out.println("The tire diameter is" + 
+                        tireDiameter(rpm, mph, dGR, tGR));
+                        break;
             }
             in.nextLine();
             System.out.println("Would you like to continue? (Y/n)");
@@ -862,7 +1173,7 @@ public class AT160ProblemSolver {
                     in.close();
                     counter = 100;
                     break;  
-                default:
+                default: 
                     in.nextLine();
                     break;
             }
