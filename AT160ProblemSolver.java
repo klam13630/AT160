@@ -3,7 +3,7 @@ import java.util.InputMismatchException;
 
 public class AT160ProblemSolver {
     private static final double constant = 0.7854;
-    private static final double gear_constant = 0.2617;
+    private static final double gear_constant = 0.2618;
     private static final double other_gear_constant = 0.00297;
     private static final double convertToCi = 16.387;
     private static final double thermal_constant = 42.4;
@@ -1002,7 +1002,7 @@ public class AT160ProblemSolver {
                         System.out.println("What is the driven RPM?");
                         drivenRPM = in.nextDouble();
                         System.out.println("The driver diameter is " + 
-                        driverDiameter(drivenGear, driverRPM, drivenRPM));
+                        driverDiameter(drivenGear, drivenRPM, driverRPM));
                         break;
                     case 52: 
                         System.out.println("What is the driver diameter?");
@@ -1012,7 +1012,7 @@ public class AT160ProblemSolver {
                         System.out.println("What is the driven RPM?");
                         drivenRPM = in.nextDouble();
                         System.out.println("The driven diameter is " + 
-                        drivenDiameter(driverGear, driverRPM, drivenRPM));
+                        drivenDiameter(driverGear, drivenRPM, driverRPM));
                         break;
                     case 53: 
                         System.out.println("What is the driver diameter?");
@@ -1088,7 +1088,7 @@ public class AT160ProblemSolver {
                         System.out.println("What is the driven RPM?");
                         drivenRPM = in.nextDouble();
                         System.out.println("The driver RPM is " +
-                        driverGear(drivenGear, drivenGear, drivenRPM));
+                        driverGear(driverGear, drivenGear, drivenRPM));
                         break;
                     case 61:
                         System.out.println("How many teeth does the driver gear have?");
@@ -1098,7 +1098,7 @@ public class AT160ProblemSolver {
                         System.out.println("What is the driver RPM?");
                         driverRPM = in.nextDouble();
                         System.out.println("The driven RPM is " +
-                        drivenGear(drivenGear, drivenGear, driverRPM));
+                        drivenGear(driverGear, drivenGear, driverRPM));
                         break;
                     case 62:
                         System.out.println("How many teeth does the driver gear have?");
